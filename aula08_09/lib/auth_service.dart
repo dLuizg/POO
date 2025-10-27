@@ -1,0 +1,22 @@
+//Precisa usar protocolo de conexão (HTTP)
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class AuthService {
+  final String apiKey = "pegar a chave no Firebase";
+
+  Future<String?> autenticarAnonimamente() async {
+    final url = Uri.parse(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$apiKey&#39y');
+
+    final response = await http.post(url, body: jsonEncode({}));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['idToken'];
+    } else {
+      print('Erro na autenticação: ${response.statusCode}');
+      return null;
+    }
+  }
+}
